@@ -1158,7 +1158,7 @@ function toggleDropdown(){
   document.getElementById('mainDropdown').classList.toggle('open');
 }
 /* ═══ URL routing map ═══ */
-const routes = {
+const routeSuffixes = {
   'home':     '/',
   'about':    '/features/',
   'tips':     '/security-tips/',
@@ -1167,6 +1167,20 @@ const routes = {
   'privacy':  '/privacy/',
   'mistakes': '/common-mistakes/',
 };
+
+function detectBasePath(){
+  const path = window.location.pathname;
+  if(path === '/' || path === '') return '';
+  const segments = path.split('/').filter(Boolean);
+  if(segments.length === 0) return '';
+  const known = new Set(['features','security-tips','faq','terms','privacy','common-mistakes']);
+  return known.has(segments[0]) ? '' : `/${segments[0]}`;
+}
+
+const basePath = detectBasePath();
+const routes = Object.fromEntries(
+  Object.entries(routeSuffixes).map(([k, suffix]) => [k, `${basePath}${suffix}`])
+);
 const reverseRoutes = Object.fromEntries(Object.entries(routes).map(([k,v])=>[v,k]));
 
 function getPageFromPath(path){
@@ -1198,7 +1212,7 @@ function showPage(id, pushHistory=true){
   const ddEl = document.getElementById('dd-'+id);
   if(ddEl) ddEl.classList.add('active-page');
   // Update URL
-  const url = routes[id] || '/';
+  const url = routes[id] || `${basePath}/`;
   if(pushHistory) window.history.pushState({page:id}, '', url);
   // Update page title
   const titles = {
@@ -1419,8 +1433,12 @@ output.addEventListener('input', ()=>{ updateStrength(output.value); checkHealth
 
 // Load correct page from URL on initial visit
 (function(){
+  document.querySelectorAll('a[href^="/"]').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (href && !href.startsWith('//')) a.setAttribute('href', `${basePath}${href}`);
+  });
   const page = getPageFromPath(window.location.pathname);
-  window.history.replaceState({page}, '', routes[page] || '/');
+  window.history.replaceState({page}, '', routes[page] || `${basePath}/`);
   showPage(page, false);
 })();
 
