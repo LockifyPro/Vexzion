@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- BASIC SEO -->
+
+</script>
+<meta charset="UTF-8"><!-- BASIC SEO -->
 <title>Vexzion — Secure Password Generator & Online Security Tools</title>
 <meta name="description" content="Generate strong, secure passwords instantly with Vexzion. Free privacy-focused password generator and online security tools designed to protect your digital accounts.">
 <meta name="keywords" content="password generator, secure password generator, strong password, random password tool, online security tools, cybersecurity tools, password creator">
@@ -49,10 +51,14 @@
   }
 }
 </script>
-</script>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PasswordAndLock — Enterprise-Grade Password Security</title>
+<meta name="description" content="Generate cryptographically secure passwords, PINs, passphrases and more. 100% browser-based, zero data collection, powered by the Web Cryptography API.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="PasswordAndLock — Secure Password Generator">
+<meta property="og:description" content="Military-grade password generation. No servers. No logs. No compromises.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://passwordandlock.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1151,10 +1157,25 @@ function showToast(msg, type='success'){
 function toggleDropdown(){
   document.getElementById('mainDropdown').classList.toggle('open');
 }
+/* ═══ URL routing map ═══ */
+const routes = {
+  'home':     '/',
+  'about':    '/features',
+  'tips':     '/security-tips',
+  'faq':      '/faq',
+  'tos':      '/terms',
+  'privacy':  '/privacy',
+  'mistakes': '/common-mistakes',
+};
+const reverseRoutes = Object.fromEntries(Object.entries(routes).map(([k,v])=>[v,k]));
+
+function getPageFromPath(path){
+  return reverseRoutes[path] || reverseRoutes[path.replace(/\/$/,'')] || 'home';
+}
+
 function ddNav(page){
   document.getElementById('mainDropdown').classList.remove('open');
   showPage(page);
-  // highlight active dd item
   document.querySelectorAll('.dd-item').forEach(i => i.classList.remove('active-page'));
   const el = document.getElementById('dd-'+page);
   if(el) el.classList.add('active-page');
@@ -1166,14 +1187,38 @@ document.addEventListener('click', e => {
 });
 
 /* ═══ Navigation ═══ */
-function showPage(id){
+function showPage(id, pushHistory=true){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   const n = document.getElementById('nav-'+id);
   if(n) n.classList.add('active');
+  // Update dd active state
+  document.querySelectorAll('.dd-item').forEach(i => i.classList.remove('active-page'));
+  const ddEl = document.getElementById('dd-'+id);
+  if(ddEl) ddEl.classList.add('active-page');
+  // Update URL
+  const url = routes[id] || '/';
+  if(pushHistory) window.history.pushState({page:id}, '', url);
+  // Update page title
+  const titles = {
+    home:     'PasswordAndLock — Secure Password Generator',
+    about:    'Features — PasswordAndLock',
+    tips:     'Security Tips — PasswordAndLock',
+    faq:      'FAQ — PasswordAndLock',
+    tos:      'Terms of Service — PasswordAndLock',
+    privacy:  'Privacy Policy — PasswordAndLock',
+    mistakes: 'Common Mistakes — PasswordAndLock',
+  };
+  document.title = titles[id] || 'PasswordAndLock';
   window.scrollTo({top:0, behavior:'smooth'});
 }
+
+// Handle browser back/forward
+window.addEventListener('popstate', e => {
+  const page = e.state?.page || getPageFromPath(window.location.pathname);
+  showPage(page, false);
+});
 
 /* ═══ Crypto random ═══ */
 function rand(max){
@@ -1372,7 +1417,13 @@ rotateTip(); setInterval(rotateTip, 7000);
 /* ═══ Live edit ═══ */
 output.addEventListener('input', ()=>{ updateStrength(output.value); checkHealth(output.value); });
 
-showPage('home');
+// Load correct page from URL on initial visit
+(function(){
+  const page = getPageFromPath(window.location.pathname);
+  window.history.replaceState({page}, '', routes[page] || '/');
+  showPage(page, false);
+})();
+
 </script>
 </body>
 </html>
