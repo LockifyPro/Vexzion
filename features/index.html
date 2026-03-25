@@ -772,7 +772,7 @@ footer {
 }
 </style>
 </head>
-<body>
+<body data-page="about">
 
 <div class="toast" id="toast"><div class="toast-dot"></div><span id="toast-msg"></span></div>
 
@@ -1157,82 +1157,25 @@ function showToast(msg, type='success'){
 function toggleDropdown(){
   document.getElementById('mainDropdown').classList.toggle('open');
 }
-/* ═══ URL routing map ═══ */
-const routeSuffixes = {
-  'home':     '/',
-  'about':    '/features/',
-  'tips':     '/security-tips/',
-  'faq':      '/faq/',
-  'tos':      '/terms/',
-  'privacy':  '/privacy/',
-  'mistakes': '/common-mistakes/',
-};
+/* ═══ MPA page map ═══ */
+const pageIds = ['home','about','tips','faq','tos','privacy','mistakes'];
+const currentPage = document.body.dataset.page || 'home';
 
-function detectBasePath(){
-  const path = window.location.pathname;
-  if(path === '/' || path === '') return '';
-  const segments = path.split('/').filter(Boolean);
-  if(segments.length === 0) return '';
-  const known = new Set(['features','security-tips','faq','terms','privacy','common-mistakes']);
-  return known.has(segments[0]) ? '' : `/${segments[0]}`;
+function setActiveNav(id){
+  pageIds.forEach(pageId => {
+    const nav = document.getElementById('nav-'+pageId);
+    if(nav) nav.classList.toggle('active', pageId === id);
+    const dd = document.getElementById('dd-'+pageId);
+    if(dd) dd.classList.toggle('active-page', pageId === id);
+  });
 }
 
-const basePath = detectBasePath();
-const routes = Object.fromEntries(
-  Object.entries(routeSuffixes).map(([k, suffix]) => [k, `${basePath}${suffix}`])
-);
-const reverseRoutes = Object.fromEntries(Object.entries(routes).map(([k,v])=>[v,k]));
-
-function getPageFromPath(path){
-  return reverseRoutes[path] || reverseRoutes[path.replace(/\/$/,'')] || 'home';
-}
-
-function ddNav(page){
-  document.getElementById('mainDropdown').classList.remove('open');
-  showPage(page);
-  document.querySelectorAll('.dd-item').forEach(i => i.classList.remove('active-page'));
-  const el = document.getElementById('dd-'+page);
-  if(el) el.classList.add('active-page');
-}
-// Close dropdown when clicking outside
-document.addEventListener('click', e => {
-  const dd = document.getElementById('mainDropdown');
-  if(dd && !dd.contains(e.target)) dd.classList.remove('open');
-});
-
-/* ═══ Navigation ═══ */
-function showPage(id, pushHistory=true){
+function showPage(id){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const n = document.getElementById('nav-'+id);
-  if(n) n.classList.add('active');
-  // Update dd active state
-  document.querySelectorAll('.dd-item').forEach(i => i.classList.remove('active-page'));
-  const ddEl = document.getElementById('dd-'+id);
-  if(ddEl) ddEl.classList.add('active-page');
-  // Update URL
-  const url = routes[id] || `${basePath}/`;
-  if(pushHistory) window.history.pushState({page:id}, '', url);
-  // Update page title
-  const titles = {
-    home:     'PasswordAndLock — Secure Password Generator',
-    about:    'Features — PasswordAndLock',
-    tips:     'Security Tips — PasswordAndLock',
-    faq:      'FAQ — PasswordAndLock',
-    tos:      'Terms of Service — PasswordAndLock',
-    privacy:  'Privacy Policy — PasswordAndLock',
-    mistakes: 'Common Mistakes — PasswordAndLock',
-  };
-  document.title = titles[id] || 'PasswordAndLock';
-  window.scrollTo({top:0, behavior:'smooth'});
+  const page = document.getElementById(id) || document.getElementById('home');
+  if(page) page.classList.add('active');
+  setActiveNav(id);
 }
-
-// Handle browser back/forward
-window.addEventListener('popstate', e => {
-  const page = e.state?.page || getPageFromPath(window.location.pathname);
-  showPage(page, false);
-});
 
 /* ═══ Crypto random ═══ */
 function rand(max){
@@ -1431,15 +1374,9 @@ rotateTip(); setInterval(rotateTip, 7000);
 /* ═══ Live edit ═══ */
 output.addEventListener('input', ()=>{ updateStrength(output.value); checkHealth(output.value); });
 
-// Load correct page from URL on initial visit
+// Load active page from document context
 (function(){
-  document.querySelectorAll('a[href^="/"]').forEach((a) => {
-    const href = a.getAttribute('href');
-    if (href && !href.startsWith('//')) a.setAttribute('href', `${basePath}${href}`);
-  });
-  const page = getPageFromPath(window.location.pathname);
-  window.history.replaceState({page}, '', routes[page] || `${basePath}/`);
-  showPage(page, false);
+  showPage(currentPage);
 })();
 
 </script>
