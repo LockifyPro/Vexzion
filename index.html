@@ -1,56 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-</script>
-<meta charset="UTF-8"><!-- BASIC SEO -->
-<title>Vexzion — Secure Password Generator & Online Security Tools</title>
-<meta name="description" content="Generate strong, secure passwords instantly with Vexzion. Free privacy-focused password generator and online security tools designed to protect your digital accounts.">
-<meta name="keywords" content="password generator, secure password generator, strong password, random password tool, online security tools, cybersecurity tools, password creator">
-<meta name="author" content="Vexzion">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://vexzion.com/">
-
-<!-- MOBILE + PERFORMANCE -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f172a">
-
-<!-- FAVICON -->
-<link rel="icon" type="image/png" href="/favicon.png">
-
-<!-- OPEN GRAPH (FACEBOOK / DISCORD / LINK PREVIEW) -->
-<meta property="og:title" content="Vexzion — Secure Password Generator">
-<meta property="og:description" content="Create strong passwords instantly with Vexzion. Fast, private, and free security tools for safer online accounts.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://vexzion.com/">
-<meta property="og:image" content="https://vexzion.com/preview.png">
-
-<!-- TWITTER SEO -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Vexzion — Secure Password Generator">
-<meta name="twitter:description" content="Generate secure passwords instantly. Privacy-focused security tools by Vexzion.">
-<meta name="twitter:image" content="https://vexzion.com/preview.png">
-
-<!-- GOOGLE VERIFICATION (ADD LATER) -->
-<meta name="google-site-verification" content="ADD_CODE_LATER">
-
-<!-- STRUCTURED DATA (VERY IMPORTANT FOR SEO) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Vexzion Password Generator",
-  "url": "https://vexzion.com",
-  "description": "Free online password generator and cybersecurity tools focused on privacy and strong security.",
-  "applicationCategory": "SecurityApplication",
-  "operatingSystem": "Any",
-  "browserRequirements": "Requires JavaScript",
-  "offers": {
-    "@type": "Offer",
-    "price": "0"
-  }
-}
-</script>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PasswordAndLock — Enterprise-Grade Password Security</title>
 <meta name="description" content="Generate cryptographically secure passwords, PINs, passphrases and more. 100% browser-based, zero data collection, powered by the Web Cryptography API.">
@@ -772,7 +723,7 @@ footer {
 }
 </style>
 </head>
-<body data-page="home">
+<body>
 
 <div class="toast" id="toast"><div class="toast-dot"></div><span id="toast-msg"></span></div>
 
@@ -793,17 +744,17 @@ footer {
     </div>
     <div class="dropdown-menu">
       <div class="dd-section-label">Navigation</div>
-      <a class="dd-item" id="dd-home" href="/"><div class="dd-item-icon">⚡</div>Generator</a>
-      <a class="dd-item" id="dd-about" href="/features/"><div class="dd-item-icon">✦</div>Features</a>
+      <div class="dd-item" id="dd-home" onclick="ddNav('home')"><div class="dd-item-icon">⚡</div>Generator</div>
+      <div class="dd-item" id="dd-about" onclick="ddNav('about')"><div class="dd-item-icon">✦</div>Features</div>
       <div class="dd-divider"></div>
       <div class="dd-section-label">Resources</div>
-      <a class="dd-item" id="dd-tips" href="/security-tips/"><div class="dd-item-icon">🛡</div>Security Tips</a>
-      <a class="dd-item" id="dd-mistakes" href="/common-mistakes/"><div class="dd-item-icon">⚠️</div>Common Mistakes</a>
-      <a class="dd-item" id="dd-faq" href="/faq/"><div class="dd-item-icon">❓</div>FAQ</a>
+      <div class="dd-item" id="dd-tips" onclick="ddNav('tips')"><div class="dd-item-icon">🛡</div>Security Tips</div>
+      <div class="dd-item" id="dd-mistakes" onclick="ddNav('mistakes')"><div class="dd-item-icon">⚠️</div>Common Mistakes</div>
+      <div class="dd-item" id="dd-faq" onclick="ddNav('faq')"><div class="dd-item-icon">❓</div>FAQ</div>
       <div class="dd-divider"></div>
       <div class="dd-section-label">Legal</div>
-      <a class="dd-item" id="dd-privacy" href="/privacy/"><div class="dd-item-icon">🔏</div>Privacy Policy</a>
-      <a class="dd-item" id="dd-tos" href="/terms/"><div class="dd-item-icon">📄</div>Terms of Service</a>
+      <div class="dd-item" id="dd-privacy" onclick="ddNav('privacy')"><div class="dd-item-icon">🔏</div>Privacy Policy</div>
+      <div class="dd-item" id="dd-tos" onclick="ddNav('tos')"><div class="dd-item-icon">📄</div>Terms of Service</div>
     </div>
   </div>
 </header>
@@ -815,10 +766,10 @@ footer {
     <div class="hero-glow"></div>
     <div class="hero-badge">Secure · Client-Side · Privacy-First</div>
     <h1>Passwords that keep<br><em>attackers out</em></h1>
-    <p>Generate cryptographically secure passwords directly in your browser. No server processing. No password storage. Fully local generation.</p>
+    <p>Generate cryptographically secure passwords directly in your browser.<br>No server processing. No password storage. Fully local generation.</p>
     <div class="hero-cta">
       <button class="btn-primary" onclick="document.getElementById('gen-section').scrollIntoView({behavior:'smooth'})">Generate a Password</button>
-      <a class="btn-ghost" href="/features/" style="display:inline-flex;align-items:center;text-decoration:none;">See All Features</a>
+      <button class="btn-ghost" onclick="showPage('about')">See All Features</button>
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><div class="num" id="sessionCount">0</div><div class="lbl">Generated This Session</div></div>
@@ -948,7 +899,7 @@ footer {
   <div class="trust-bar" style="margin-top:48px;">
     <div class="trust-item"><span class="trust-icon">🔒</span> No server-side processing</div>
     <div class="trust-item"><span class="trust-icon">🧬</span> CSPRNG randomness</div>
-    <div class="trust-item"><span class="trust-icon">🚫</span> No Password Data Collection</div>
+    <div class="trust-item"><span class="trust-icon">🚫</span> Zero data collection</div>
     <div class="trust-item"><span class="trust-icon">🌐</span> Works offline</div>
     <div class="trust-item"><span class="trust-icon">⚡</span> Instant generation</div>
   </div>
@@ -1157,25 +1108,68 @@ function showToast(msg, type='success'){
 function toggleDropdown(){
   document.getElementById('mainDropdown').classList.toggle('open');
 }
-/* ═══ MPA page map ═══ */
-const pageIds = ['home','about','tips','faq','tos','privacy','mistakes'];
-const currentPage = document.body.dataset.page || 'home';
+/* ═══ URL routing map ═══ */
+const routes = {
+  'home':     '/',
+  'about':    '/features',
+  'tips':     '/security-tips',
+  'faq':      '/faq',
+  'tos':      '/terms',
+  'privacy':  '/privacy',
+  'mistakes': '/common-mistakes',
+};
+const reverseRoutes = Object.fromEntries(Object.entries(routes).map(([k,v])=>[v,k]));
 
-function setActiveNav(id){
-  pageIds.forEach(pageId => {
-    const nav = document.getElementById('nav-'+pageId);
-    if(nav) nav.classList.toggle('active', pageId === id);
-    const dd = document.getElementById('dd-'+pageId);
-    if(dd) dd.classList.toggle('active-page', pageId === id);
-  });
+function getPageFromPath(path){
+  return reverseRoutes[path] || reverseRoutes[path.replace(/\/$/,'')] || 'home';
 }
 
-function showPage(id){
+function ddNav(page){
+  document.getElementById('mainDropdown').classList.remove('open');
+  showPage(page);
+  document.querySelectorAll('.dd-item').forEach(i => i.classList.remove('active-page'));
+  const el = document.getElementById('dd-'+page);
+  if(el) el.classList.add('active-page');
+}
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  const dd = document.getElementById('mainDropdown');
+  if(dd && !dd.contains(e.target)) dd.classList.remove('open');
+});
+
+/* ═══ Navigation ═══ */
+function showPage(id, pushHistory=true){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const page = document.getElementById(id) || document.getElementById('home');
-  if(page) page.classList.add('active');
-  setActiveNav(id);
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const n = document.getElementById('nav-'+id);
+  if(n) n.classList.add('active');
+  // Update dd active state
+  document.querySelectorAll('.dd-item').forEach(i => i.classList.remove('active-page'));
+  const ddEl = document.getElementById('dd-'+id);
+  if(ddEl) ddEl.classList.add('active-page');
+  // Update URL
+  const url = routes[id] || '/';
+  if(pushHistory) window.history.pushState({page:id}, '', url);
+  // Update page title
+  const titles = {
+    home:     'PasswordAndLock — Secure Password Generator',
+    about:    'Features — PasswordAndLock',
+    tips:     'Security Tips — PasswordAndLock',
+    faq:      'FAQ — PasswordAndLock',
+    tos:      'Terms of Service — PasswordAndLock',
+    privacy:  'Privacy Policy — PasswordAndLock',
+    mistakes: 'Common Mistakes — PasswordAndLock',
+  };
+  document.title = titles[id] || 'PasswordAndLock';
+  window.scrollTo({top:0, behavior:'smooth'});
 }
+
+// Handle browser back/forward
+window.addEventListener('popstate', e => {
+  const page = e.state?.page || getPageFromPath(window.location.pathname);
+  showPage(page, false);
+});
 
 /* ═══ Crypto random ═══ */
 function rand(max){
@@ -1374,9 +1368,11 @@ rotateTip(); setInterval(rotateTip, 7000);
 /* ═══ Live edit ═══ */
 output.addEventListener('input', ()=>{ updateStrength(output.value); checkHealth(output.value); });
 
-// Load active page from document context
+// Load correct page from URL on initial visit
 (function(){
-  showPage(currentPage);
+  const page = getPageFromPath(window.location.pathname);
+  window.history.replaceState({page}, '', routes[page] || '/');
+  showPage(page, false);
 })();
 
 </script>
